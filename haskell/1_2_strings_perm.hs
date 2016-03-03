@@ -16,5 +16,12 @@ isStringPerm s1 s2
     | length s1 /= length s2 = False
     | otherwise = isNothing $ find (uncurry (/=)) (zip (elems $ stringToFrequencyArray s1) (elems $ stringToFrequencyArray s2))
 
-randomTest = quickCheck(\s1 s2 -> if sort s1 == sort s2 then isStringPerm s1 s2 else not (isStringPerm s1 s2))
+prop_Perm s1 s2 =
+    length s1 == length s2 ==>
+    if sort s1 == sort s2 then
+        isStringPerm s1 s2
+    else
+        not (isStringPerm s1 s2)
+
+randomTest = quickCheck prop_Perm
 
